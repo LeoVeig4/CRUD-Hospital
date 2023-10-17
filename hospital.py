@@ -1,17 +1,20 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 #criar a primeira rota
 #função -> o que você quer exibir na página
-
+#template
 @app.route("/")
 def homepage():
-    return "Esse é o site do hospital"
+    return render_template("homepage.html")
 
 @app.route("/pacientes")
 def pacientes():
-    return "<p>Essa é a página de pacientes</p> Lowrucrada"
+    return render_template("pacientes.html")
 
+@app.route("/pacientes/<nome>")
+def pacientesNome(nome):
+    return render_template("pacientes.html", nome=nome)
 
 #colocar o site no ar
 if __name__ == "__main__":
