@@ -49,17 +49,19 @@ def login():
         diagnostico = request.form.get('diagnostico', None)
         tratamento = request.form.get('tratamento', None)
         observacoes = request.form.get('observacoes', None)
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute('''INSERT INTO pacientes 
+                            (nome, idade, genero, endereco, cidade, estado, telefone, email, 
+                            data_admissao, data_alta, diagnostico, tratamento, observacoes) 
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                        (nome, idade, genero, endereco, cidade, estado, telefone, email,
+                            data_admissao, data_alta, diagnostico, tratamento, observacoes))
+            mysql.connection.commit()
+        except Exception as e:
+            return "Não foi possível inserir os dados!\n{}".format(e), 400
         
-        cursor = mysql.connection.cursor()
-        cursor.execute('''INSERT INTO pacientes 
-                        (nome, idade, genero, endereco, cidade, estado, telefone, email, 
-                        data_admissao, data_alta, diagnostico, tratamento, observacoes) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
-                    (nome, idade, genero, endereco, cidade, estado, telefone, email,
-                        data_admissao, data_alta, diagnostico, tratamento, observacoes))
-        mysql.connection.commit()
         cursor.close()
-        
         return "Paciente cadastrado com sucesso!"
 
 
@@ -84,6 +86,8 @@ def pacientesInfo(id):
     cursor.execute("SELECT * FROM pacientes where id = %s", (id,))
     result = cursor.fetchall()
     cursor.close()
+    if(len(result) == 0):
+        return "Record not found", 400
     return render_template("paciente.html", paciente=result)
 
 #colocar o site no ar
