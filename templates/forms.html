@@ -3,14 +3,25 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Homepage</title>
+    <title>Cadastro de Pacientes</title>
 </head>
 
 <body>
-    <form action="/login" method="POST">
-        <p>name <input type="text" name="name" /></p>
-        <p>age <input type="integer" name="age" /></p>
-        <p><input type="submit" value="Submit" /></p>
+    <form action="/cadastrar_paciente" method="POST">
+        <p>Nome: <input type="text" name="nome" required /></p>
+        <p>Idade: <input type="number" name="idade" required /></p>
+        <p>Gênero: <input type="text" name="genero" /></p>
+        <p>Endereço: <input type="text" name="endereco" /></p>
+        <p>Cidade: <input type="text" name="cidade" /></p>
+        <p>Estado: <input type="text" name="estado" maxlength="2" /></p>
+        <p>Telefone: <input type="tel" name="telefone" /></p>
+        <p>Email: <input type="email" name="email" /></p>
+        <p>Data de Admissão: <input type="date" name="data_admissao" /></p>
+        <p>Data de Alta: <input type="date" name="data_alta" /></p>
+        <p>Diagnóstico: <input type="text" name="diagnostico" /></p>
+        <p>Tratamento: <textarea name="tratamento"></textarea></p>
+        <p>Observações: <textarea name="observacoes"></textarea></p>
+        <p><input type="submit" value="Cadastrar Paciente" /></p>
     </form>
 </body>
 

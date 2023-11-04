@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'password'
-app.config['MYSQL_DB'] = 'flask'
+app.config['MYSQL_DB'] = 'flask2k'
 
 mysql = MySQL(app)
 
@@ -30,19 +30,39 @@ mysql = MySQL(app)
 def form():
     return render_template('forms.html')
  
-@app.route('/login', methods = ['POST', 'GET'])
+@app.route('/cadastrar_paciente', methods = ['POST', 'GET'])
 def login():
     if request.method == 'GET':
         return "Login via the login Form"
      
     if request.method == 'POST':
-        name = request.form['name']
-        age = request.form['age']
+        nome = request.form['nome']
+        idade = request.form['idade']
+        genero = request.form.get('genero', None)
+        endereco = request.form.get('endereco', None)
+        cidade = request.form.get('cidade', None)
+        estado = request.form.get('estado', None)
+        telefone = request.form.get('telefone', None)
+        email = request.form.get('email', None)
+        data_admissao = request.form.get('data_admissao', None)
+        data_alta = request.form.get('data_alta', None)
+        diagnostico = request.form.get('diagnostico', None)
+        tratamento = request.form.get('tratamento', None)
+        observacoes = request.form.get('observacoes', None)
+        
         cursor = mysql.connection.cursor()
-        cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(name,age))
+        cursor.execute('''INSERT INTO pacientes 
+                        (nome, idade, genero, endereco, cidade, estado, telefone, email, 
+                        data_admissao, data_alta, diagnostico, tratamento, observacoes) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                    (nome, idade, genero, endereco, cidade, estado, telefone, email,
+                        data_admissao, data_alta, diagnostico, tratamento, observacoes))
         mysql.connection.commit()
         cursor.close()
-        return f"Done!!"
+        
+        return "Paciente cadastrado com sucesso!"
+
+
 #criar a primeira rota
 #função -> o que você quer exibir na página
 #template
@@ -52,11 +72,19 @@ def homepage():
 
 @app.route("/pacientes")
 def pacientes():
-    return render_template("pacientes.html")
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM pacientes")
+    result = cursor.fetchall()
+    cursor.close()
+    return render_template("pacientes.html", pacientes=result)
 
-@app.route("/pacientes/<nome>")
-def pacientesNome(nome):
-    return render_template("pacientes.html", nome=nome)
+@app.route("/pacientes/<id>")
+def pacientesInfo(id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM pacientes where id = %s", (id,))
+    result = cursor.fetchall()
+    cursor.close()
+    return render_template("paciente.html", paciente=result)
 
 #colocar o site no ar
 if __name__ == "__main__":
