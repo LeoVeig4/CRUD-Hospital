@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: 'db'
+      MYSQL_USER: 'mysql'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_DB: 'flask2k'
+      FLASK_APP: 'app.py'
+      FLASK_RUN_HOST: '0.0.0.0'
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_USER: 'mysql'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./flask2k.sql:/docker-entrypoint-initdb.d/flask2k.sql
+      - ./flask5k.sql:/docker-entrypoint-initdb.d/flask5k.sql
