@@ -19,27 +19,27 @@ services:
   db:
     image: mysql:5.7
     restart: always
+    container_name: db
     environment:
       MYSQL_USER: 'mysql'
       MYSQL_ROOT_PASSWORD: 'password'
     volumes:
       - ./data:/var/lib/mysql
-      #- ./flask2k.sql:/docker-entrypoint-initdb.d/flask2k.sql
       - ./flask5k.sql:/docker-entrypoint-initdb.d/flask5k.sql
-    # - ./my-master.cnf:/etc/my.cnf
-    command: --server-id=1 --log-bin=mysql-bin --binlog-do-db=flask2k --binlog-do-db=flask5k
+    #  - ./my-master.cnf:/etc/my.cnf
+    command: --server-id=1 --log-bin=mysql-bin --binlog-do-db=flask5k
 
   db-replica:
     image: mysql:5.7
+    container_name: db-replica
     restart: always
     environment:
       MYSQL_USER: 'mysql'
       MYSQL_ROOT_PASSWORD: 'password'
     volumes:
       - ./data-replica:/var/lib/mysql
-      #- ./flask2k.sql:/docker-entrypoint-initdb.d/flask2k.sql
       - ./flask5k.sql:/docker-entrypoint-initdb.d/flask5k.sql
       #- ./my-slave.cnf:/etc/my.cnf
     depends_on:
       - db
-    command: --log-bin=mysql-bin --server-id=2 --relay-log=mysql-relay-bin --log-slave-updates=1 --binlog-do-db=flask2k --binlog-do-db=flask5k
+    command: --log-bin=mysql-bin --server-id=2 --relay-log=mysql-relay-bin --log-slave-updates=1 --binlog-do-db=flask5k
