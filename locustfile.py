@@ -50,7 +50,7 @@ class MyUser(HttpUser):
 
     def pacientes_info(self):
         # Assuming you have patients in the database, you can retrieve a specific patient
-        id = fake.random_int(min=1, max=2000)  # Replace with a valid patient ID from your database
+        id = fake.random_int(min=1, max=5000)  # Replace with a valid patient ID from your database
         try:
             response = self.client.get(f'/pacientes/{id}')
         except Exception as e:

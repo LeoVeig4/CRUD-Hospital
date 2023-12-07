@@ -19,7 +19,7 @@ app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'crud-hospital-db-1'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'password'
-app.config['MYSQL_DB'] = 'flask2k'
+app.config['MYSQL_DB'] = 'flask5k'
 mysql = MySQL(app)
 
 # #Creating a connection cursor
