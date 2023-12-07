@@ -21,7 +21,6 @@ services:
     restart: always
     environment:
       MYSQL_USER: 'mysql'
-      MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
     volumes:
       - ./data:/var/lib/mysql
