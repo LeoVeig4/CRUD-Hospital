@@ -26,3 +26,13 @@ services:
       - ./data:/var/lib/mysql
       - ./flask2k.sql:/docker-entrypoint-initdb.d/flask2k.sql
       - ./flask5k.sql:/docker-entrypoint-initdb.d/flask5k.sql
+  db-replica:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_USER: 'mysql'
+      MYSQL_ROOT_PASSWORD: 'password'
+    volumes:
+      - ./data-replica:/var/lib/mysql
+      - ./flask2k.sql:/docker-entrypoint-initdb.d/flask2k.sql
+      - ./flask5k.sql:/docker-entrypoint-initdb.d/flask5k.sql
